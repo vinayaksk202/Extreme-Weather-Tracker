@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extreme Weather Event Tracker — SIH26078</title>
+<meta name="description" content="Extreme Weather Event Tracker — geospatial intelligence dashboard for historical weather events.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link id="leaflet-css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="loading" id="loading">
+  <div class="loader">
+    <div class="loader-emblem"><img src="assets/weather-watch-logo-transparent.png" alt="Weather Watch logo"></div>
+    <div class="loader-kicker">SIH26078 · GEOSPATIAL INTELLIGENCE</div>
+    <div class="loader-title">WEATHER<span>WATCH</span></div>
+    <div class="loader-sub">MAPPING EXTREME EVENTS ACROSS INDIA</div>
+    <div class="loader-progress"><span></span></div>
+    <div class="loader-status"><span class="dot"></span> CALIBRATING EVENT STREAM</div>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+    <a class="brand" href="#"><div class="logo-mark"><img src="assets/weather-watch-logo-transparent.png" alt="Weather Watch"></div><div>EXTREME WEATHER<small>GEOSPATIAL INTELLIGENCE</small></div></a>
+    <nav class="links"><a class="active" href="#overview">Overview</a><a href="#events">Events</a><a href="#timeline">Timeline</a><a href="#analytics">Analytics</a></nav>
+    <div class="status"><span class="dot"></span>SYSTEM ONLINE</div>
+  </div>
+</header>
+
+<main id="overview" class="container">
+<section class="hero reveal">
+ <div><div class="eyebrow">EXTREME WEATHER INTELLIGENCE · SIH26078</div><h1>Track the storm.<br><span style="color:#8290a2">Understand the pattern.</span></h1>
+ <p>Explore where extreme weather happens, when it happens, and how severe it becomes through an interactive geospatial dashboard.</p>
+ <div class="actions"><a class="btn primary" href="#events">EXPLORE EVENTS ↗</a><a class="btn" href="#analytics">VIEW ANALYTICS</a></div></div>
+ <div class="hero-side"><span class="dot" style="display:inline-block;margin-right:7px"></span> DATA STREAM ACTIVE<br><strong>02 SEP 2026 · 12:42 IST</strong><br>HISTORICAL DEMO DATASET</div>
+</section>
+
+<section class="kpis reveal" id="kpis"></section>
+
+<section id="events" class="reveal">
+ <div class="section-title"><div><h2>Event Intelligence Map</h2><p>Explore extreme-weather occurrences across India.</p></div><div style="font-size:10px;color:#697687">LIVE FILTERED VIEW</div></div>
+ <div class="map-wrap">
+   <div id="map" class="map"></div>
+   <div id="mapFallback" class="empty" style="display:none;position:absolute;inset:0;place-items:center;z-index:10;background:#0b1017"><div><div style="font-size:30px">🗺️</div><strong>MAP UNAVAILABLE</strong><br><br>Event intelligence remains available below.<br><button class="btn" onclick="location.reload()" style="margin-top:15px">RETRY CONNECTION</button></div></div>
+   <div class="map-overlay">
+     <div class="filter-label">SEARCH LOCATION OR EVENT</div>
+     <input class="input" id="search" placeholder="Search Pune, Flood, Maharashtra...">
+     <div class="filter-row">
+       <div><div class="filter-label">EVENT TYPE</div><select class="select" id="typeFilter"><option>All Events</option></select></div>
+       <div><div class="filter-label">SEVERITY</div><select class="select" id="severityFilter"><option>All</option><option>Critical</option><option>High</option><option>Moderate</option><option>Low</option></select></div>
+     </div>
+     <div class="filter-row">
+       <div><div class="filter-label">YEAR</div><select class="select" id="yearFilter"><option>All Years</option></select></div>
+       <div style="display:flex;align-items:end"><button class="btn" id="reset" style="width:100%">RESET</button></div>
+     </div>
+   </div>
+   <div class="map-status"><span class="dot" style="display:inline-block;margin-right:5px"></span><span id="mapCount">0</span> EVENTS INDEXED</div>
+   <div class="legend"><span><i style="background:var(--critical)"></i>Critical</span><span><i style="background:var(--high)"></i>High</span><span><i style="background:var(--moderate)"></i>Moderate</span><span><i style="background:var(--low)"></i>Low</span></div>
+   <div class="details" id="details"></div>
+ </div>
+</section>
+
+<section id="timeline" class="reveal">
+ <div class="section-title"><div><h2>Event Chronology</h2><p>Trace the evolution of extreme-weather activity from 2020 to 2026.</p></div><div class="timeline-hint">CLICK A YEAR TO FILTER · <span>SCROLL TO EXPLORE</span></div></div>
+ <div class="card timeline timeline-pro">
+   <div class="timeline-head"><span>HISTORICAL EVENT INDEX</span><strong id="timelineTotal">0 EVENTS</strong></div>
+   <div class="timeline-track"><div class="timeline-line"><span></span></div><div class="years" id="timelineYears"></div></div>
+ </div>
+</section>
+
+<section id="analytics" class="reveal">
+ <div class="section-title"><div><h2>Weather Analytics</h2><p>Patterns derived dynamically from the selected dataset.</p></div></div>
+ <div class="analytics">
+   <div class="card chart-card"><h3>Events by Year</h3><p>Historical event frequency</p><div class="chart-holder"><canvas id="yearChart"></canvas><div id="yearFallback" style="display:none"></div></div></div>
+   <div class="card chart-card"><h3>Event Composition</h3><p>Distribution by event type</p><div class="chart-holder"><canvas id="typeChart"></canvas><div id="typeFallback" style="display:none"></div></div></div>
+ </div>
+</section>
+
+<section class="reveal">
+ <div class="section-title"><div><h2>Recent Events</h2><p>Click any row to focus its location on the map.</p></div></div>
+ <div class="card recent" id="recent"></div>
+</section>
+</main>
+
+<footer class="container footer"><div><strong>EXTREME WEATHER EVENT TRACKER</strong><br><br>Visualizing weather events. Understanding patterns.<br>SIH26078 · Demo Frontend</div><div><strong>DATA SOURCE</strong><br><br>PUBLIC WEATHER DATASET · HISTORICAL DEMO<br>Designed for hackathon by TechVora.</div></footer>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
